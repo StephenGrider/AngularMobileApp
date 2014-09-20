@@ -66,22 +66,57 @@ angular.module("starter.controllers", []).controller("AppCtrl", function($scope,
       return $scope.closeLogin();
     }), 1000);
   };
-}).controller("PlaylistsCtrl", function($scope, GuideContent) {
+}).controller("PlaylistsCtrl", function($scope, GuideContent, GuideStorage) {
   var onGetAll;
   onGetAll = function(guides) {
-    return $scope.playlists = guides;
+    return $scope.playlists = GuideStorage.getGuideStatus(guides);
   };
   return GuideContent.getAll().success(onGetAll);
-}).controller("PlaylistCtrl", function($scope, $stateParams, GuideContent) {
+}).controller("PlaylistCtrl", function($scope, $stateParams, GuideContent, GuideStorage) {
   return GuideContent.getAll().success(function(guides) {
-    return $scope.guide = guides[$stateParams.playlistId];
+    $scope.guide = guides[$stateParams.playlistId];
+    $scope.guide.hasRead = true;
+    return GuideStorage.setGuideStatus($stateParams.playlistId, $scope.guide.hasRead);
   });
 });
 
-angular.module("starter.services", []).service("GuideContent", function($http) {
+angular.module("starter.services", []).service("LocalStorage", function() {
+  var prefix;
+  prefix = "_solar";
+  return {
+    get: function(key) {
+      return JSON.parse(localStorage.getItem("" + prefix + ":" + key));
+    },
+    set: function(key, item) {
+      return localStorage.setItem("" + prefix + ":" + key, JSON.stringify(item));
+    },
+    setPrefix: function(string) {
+      return prefix = string;
+    }
+  };
+}).service("GuideContent", function($http) {
   return {
     getAll: function() {
       return $http.get('content/guide.json');
+    }
+  };
+}).service("GuideStorage", function(LocalStorage) {
+  return {
+    getGuideStatus: function(guides) {
+      var storage;
+      storage = LocalStorage.get("guide");
+      if (storage === null) {
+        LocalStorage.set("guide", {});
+      }
+      return _(guides).each(function(guide) {
+        return guide.hasRead = storage[guide.id] || false;
+      });
+    },
+    setGuideStatus: function(id, hasRead) {
+      var storage;
+      storage = LocalStorage.get("guide");
+      storage[id] = hasRead;
+      return LocalStorage.set("guide", storage);
     }
   };
 });

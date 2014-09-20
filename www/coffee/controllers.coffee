@@ -30,20 +30,17 @@ angular.module("starter.controllers", []).controller("AppCtrl", ($scope, $ionicM
       $scope.closeLogin()
     ), 1000
 
-).controller("PlaylistsCtrl", ($scope, GuideContent ) ->
+).controller("PlaylistsCtrl", ($scope, GuideContent, GuideStorage) ->
   onGetAll = (guides) ->
-
-
-    $scope.playlists = guides
-
-
-
+    $scope.playlists = GuideStorage.getGuideStatus(guides)
 
   GuideContent.getAll()
     .success(onGetAll)
 
-).controller "PlaylistCtrl", ($scope, $stateParams, GuideContent) ->
+).controller "PlaylistCtrl", ($scope, $stateParams, GuideContent, GuideStorage) ->
   GuideContent.getAll()
     .success((guides) ->
       $scope.guide = guides[$stateParams.playlistId]
+      $scope.guide.hasRead = true
+      GuideStorage.setGuideStatus($stateParams.playlistId, $scope.guide.hasRead)
     )

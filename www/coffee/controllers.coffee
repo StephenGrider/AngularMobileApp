@@ -1,16 +1,3 @@
-
-# Form data for the login modal
-
-# Create the login modal that we will use later
-
-# Triggered in the login modal to close it
-
-# Open the login modal
-
-# Perform the login action when the user submits the login form
-
-# Simulate a login delay. Remove this and replace with your login
-# code if using a login system
 angular.module("starter.controllers", []).controller("AppCtrl", ($scope, $ionicModal, $timeout) ->
   $scope.loginData = {}
   $ionicModal.fromTemplateUrl("templates/login.html",
@@ -30,17 +17,17 @@ angular.module("starter.controllers", []).controller("AppCtrl", ($scope, $ionicM
       $scope.closeLogin()
     ), 1000
 
-).controller("PlaylistsCtrl", ($scope, GuideContent, GuideStorage) ->
+).controller("GuidesCtrl", ($scope, GuideContent, GuideStorage) ->
   onGetAll = (guides) ->
-    $scope.playlists = GuideStorage.getGuideStatus(guides)
+    $scope.guides = GuideStorage.getGuideStatus(guides)
 
   GuideContent.getAll()
     .success(onGetAll)
 
-).controller "PlaylistCtrl", ($scope, $stateParams, GuideContent, GuideStorage) ->
+).controller "GuideCtrl", ($scope, $stateParams, GuideContent, GuideStorage) ->
   GuideContent.getAll()
     .success((guides) ->
-      $scope.guide = guides[$stateParams.playlistId]
+      $scope.guide = guides[$stateParams.guideId]
       $scope.guide.hasRead = true
-      GuideStorage.setGuideStatus($stateParams.playlistId, $scope.guide.hasRead)
+      GuideStorage.setGuideStatus($stateParams.guideId, $scope.guide.hasRead)
     )

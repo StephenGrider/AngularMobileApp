@@ -27,24 +27,24 @@ angular.module("starter", ["ionic", "starter.controllers", "starter.services"]).
         templateUrl: "templates/browse.html"
       }
     }
-  }).state("app.playlists", {
-    url: "/playlists",
+  }).state("app.guides", {
+    url: "/guides",
     views: {
       menuContent: {
-        templateUrl: "templates/playlists.html",
-        controller: "PlaylistsCtrl"
+        templateUrl: "templates/guides.html",
+        controller: "GuidesCtrl"
       }
     }
   }).state("app.single", {
-    url: "/playlists/:playlistId",
+    url: "/guides/:guideId",
     views: {
       menuContent: {
-        templateUrl: "templates/playlist.html",
-        controller: "PlaylistCtrl"
+        templateUrl: "templates/guide.html",
+        controller: "GuideCtrl"
       }
     }
   });
-  return $urlRouterProvider.otherwise("/app/playlists");
+  return $urlRouterProvider.otherwise("/app/guides");
 });
 
 angular.module("starter.controllers", []).controller("AppCtrl", function($scope, $ionicModal, $timeout) {
@@ -66,17 +66,17 @@ angular.module("starter.controllers", []).controller("AppCtrl", function($scope,
       return $scope.closeLogin();
     }), 1000);
   };
-}).controller("PlaylistsCtrl", function($scope, GuideContent, GuideStorage) {
+}).controller("GuidesCtrl", function($scope, GuideContent, GuideStorage) {
   var onGetAll;
   onGetAll = function(guides) {
-    return $scope.playlists = GuideStorage.getGuideStatus(guides);
+    return $scope.guides = GuideStorage.getGuideStatus(guides);
   };
   return GuideContent.getAll().success(onGetAll);
-}).controller("PlaylistCtrl", function($scope, $stateParams, GuideContent, GuideStorage) {
+}).controller("GuideCtrl", function($scope, $stateParams, GuideContent, GuideStorage) {
   return GuideContent.getAll().success(function(guides) {
-    $scope.guide = guides[$stateParams.playlistId];
+    $scope.guide = guides[$stateParams.guideId];
     $scope.guide.hasRead = true;
-    return GuideStorage.setGuideStatus($stateParams.playlistId, $scope.guide.hasRead);
+    return GuideStorage.setGuideStatus($stateParams.guideId, $scope.guide.hasRead);
   });
 });
 

@@ -6,7 +6,8 @@
     <ion-list>
 
       <a ng-repeat="guide in guides" class="item item-avatar" href="#/app/guides/{{guide.id}}">
-        <img src="venkman.jpg">
+        <img class="list-icon" ng-show="guide.hasRead" src="img/sun.png">
+        <img class="list-icon" ng-hide="guide.hasRead" src="img/rain.png">
         <h2>{{guide.title}}</h2>
         <p ng-hide="guide.hasRead">To Do: Read me!</p>
         <p ng-show="guide.hasRead">Complete!</p>

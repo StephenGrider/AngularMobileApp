@@ -31,3 +31,11 @@ angular.module("app.services", [])
     storage[id] = hasRead
     LocalStorage.set("guide", storage)
 )
+
+.service("Referral", ->
+  ContactDetails = Parse.Object.extend("referral");
+
+  save: (details) ->
+    contactDetails = new ContactDetails(details)
+    contactDetails.save()
+)

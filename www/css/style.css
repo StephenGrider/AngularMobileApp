@@ -2,3 +2,12 @@
   -webkit-box-shadow: -16px -1px 15px 0px rgba(50, 50, 50, 0.69);
   -moz-box-shadow: -16px -1px 15px 0px rgba(50, 50, 50, 0.69);
   box-shadow: -16px -1px 15px 0px rgba(50, 50, 50, 0.69); }
+
+.list-icon {
+  position: absolute;
+  top: 16px;
+  left: 16px;
+  max-width: 40px;
+  max-height: 40px;
+  width: 100%;
+  border-radius: 4px; }

@@ -4,8 +4,9 @@ angular.module("app", ["ionic", "app.controllers", "app.services"]).run(function
       cordova.plugins.Keyboard.hideKeyboardAccessoryBar(true);
     }
     if (window.StatusBar) {
-      return StatusBar.styleDefault();
+      StatusBar.styleDefault();
     }
+    return Parse.initialize("OueLHhADp4r43zJVjor1UlaKP8A672NTpnoD6JKQ", "HtxCby57dqU6pHSR2nCkjJZ3JflVg84m0ERXONQB");
   });
 }).config(function($stateProvider, $urlRouterProvider) {
   $stateProvider.state("app", {
@@ -118,6 +119,16 @@ angular.module("app.services", []).service("LocalStorage", function() {
       storage = LocalStorage.get("guide");
       storage[id] = hasRead;
       return LocalStorage.set("guide", storage);
+    }
+  };
+}).service("Referral", function() {
+  var ContactDetails;
+  ContactDetails = Parse.Object.extend("referral");
+  return {
+    save: function(details) {
+      var contactDetails;
+      contactDetails = new ContactDetails(details);
+      return contactDetails.save();
     }
   };
 });

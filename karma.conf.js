@@ -18,6 +18,7 @@ module.exports = function(config) {
       'www/lib/ionic/js/ionic.bundle.js',
       'www/lib/angular-mocks/angular-mocks.js',
       'www/lib/underscore/underscore.js',
+      'www/lib/parse/parse-1.3.0.min.js',
       'www/**/*.coffee',
       'specs/**/*.coffee'
     ],

@@ -48,7 +48,7 @@ angular.module("app", ["ionic", "app.controllers", "app.services"]).run(function
   return $urlRouterProvider.otherwise("/app/guides");
 });
 
-angular.module("app.controllers", []).controller("AppCtrl", function($scope, $ionicModal, $timeout) {
+angular.module("app.controllers", []).controller("AppCtrl", function($scope, $ionicModal, Referral) {
   $scope.loginData = {};
   $ionicModal.fromTemplateUrl("templates/login.html", {
     scope: $scope
@@ -62,10 +62,9 @@ angular.module("app.controllers", []).controller("AppCtrl", function($scope, $io
     return $scope.modal.show();
   };
   return $scope.doLogin = function() {
-    console.log("Doing login", $scope.loginData);
-    return $timeout((function() {
-      return $scope.closeLogin();
-    }), 1000);
+    Referral.save($scope.loginData);
+    $scope.loginData = {};
+    return $scope.closeLogin();
   };
 }).controller("GuidesCtrl", function($scope, GuideContent, GuideStorage) {
   var onGetAll;
@@ -123,7 +122,7 @@ angular.module("app.services", []).service("LocalStorage", function() {
   };
 }).service("Referral", function() {
   var ContactDetails;
-  ContactDetails = Parse.Object.extend("referral");
+  ContactDetails = Parse.Object.extend("Referral");
   return {
     save: function(details) {
       var contactDetails;

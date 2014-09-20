@@ -1,6 +1,6 @@
 <div class="modal">
   <ion-header-bar>
-    <h1 class="title">Login</h1>
+    <h1 class="title">Get More Info</h1>
     <div class="buttons">
       <button class="button button-clear" ng-click="closeLogin()">Close</button>
     </div>
@@ -8,19 +8,42 @@
   <ion-content>
     <form ng-submit="doLogin()">
       <div class="list">
+
         <label class="item item-input">
-          <span class="input-label">Username</span>
-          <input type="text" ng-model="loginData.username">
+          <span class="input-label">Name</span>
+          <input type="text" placeholder="Jane Smith" ng-model="loginData.name">
         </label>
+
         <label class="item item-input">
-          <span class="input-label">Password</span>
-          <input type="password" ng-model="loginData.password">
+          <span class="input-label">Address</span>
+          <input type="text" placeholder="123 Main Street" ng-model="loginData.address">
         </label>
+
+        <label class="item item-input">
+          <span class="input-label">City</span>
+          <input type="text" placeholder="Sacramento" ng-model="loginData.city">
+        </label>
+
+        <label class="item item-input">
+          <span class="input-label">State</span>
+          <input type="text" placeholder="California" ng-model="loginData.state">
+        </label>
+
+        <label class="item item-input">
+          <span class="input-label">Email</span>
+          <input type="text" placeholder="email@email.com" ng-model="loginData.email">
+        </label>
+
+        <label class="item item-input">
+          <span class="input-label">Phone</span>
+          <input type="text" placeholder="555-555-5555" ng-model="loginData.phone">
+        </label>
+
+
         <label class="item">
-          <button class="button button-block button-positive" type="submit">Log in</button>
+          <button class="button button-block button-positive" type="submit">Lets Do It!</button>
         </label>
       </div>
     </form>
   </ion-content>
 </div>
-

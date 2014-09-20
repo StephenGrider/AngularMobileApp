@@ -1,4 +1,4 @@
-angular.module("app.controllers", []).controller("AppCtrl", ($scope, $ionicModal, $timeout) ->
+angular.module("app.controllers", []).controller("AppCtrl", ($scope, $ionicModal, Referral) ->
   $scope.loginData = {}
   $ionicModal.fromTemplateUrl("templates/login.html",
     scope: $scope
@@ -12,10 +12,10 @@ angular.module("app.controllers", []).controller("AppCtrl", ($scope, $ionicModal
     $scope.modal.show()
 
   $scope.doLogin = ->
-    console.log "Doing login", $scope.loginData
-    $timeout (->
-      $scope.closeLogin()
-    ), 1000
+    Referral.save($scope.loginData)
+    $scope.loginData = {}
+    $scope.closeLogin()
+
 
 ).controller("GuidesCtrl", ($scope, GuideContent, GuideStorage) ->
   onGetAll = (guides) ->

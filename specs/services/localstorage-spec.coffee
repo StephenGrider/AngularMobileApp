@@ -1,6 +1,6 @@
 describe 'App Services LocalStorage', ->
   beforeEach ->
-    module('starter')
+    module('app')
 
   service = null
 
@@ -14,8 +14,7 @@ describe 'App Services LocalStorage', ->
     expect(JSON.parse(localStorage.getItem('_solar:hat'))).toEqual('bat')
 
   it 'gets items from localStorage', ->
-    localStorage.setItem('hat', 'bat')
-
+    localStorage.setItem('_solar:hat', JSON.stringify('bat'))
     expect(service.get('hat')).toEqual('bat')
 
   it 'parses and stringifies json input', ->

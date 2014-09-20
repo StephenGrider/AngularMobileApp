@@ -1,4 +1,4 @@
-angular.module("starter.controllers", []).controller("AppCtrl", ($scope, $ionicModal, $timeout) ->
+angular.module("app.controllers", []).controller("AppCtrl", ($scope, $ionicModal, $timeout) ->
   $scope.loginData = {}
   $ionicModal.fromTemplateUrl("templates/login.html",
     scope: $scope

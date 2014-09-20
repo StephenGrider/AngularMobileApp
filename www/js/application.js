@@ -1,4 +1,4 @@
-angular.module("starter", ["ionic", "starter.controllers", "starter.services"]).run(function($ionicPlatform) {
+angular.module("app", ["ionic", "app.controllers", "app.services"]).run(function($ionicPlatform) {
   return $ionicPlatform.ready(function() {
     if (window.cordova && window.cordova.plugins.Keyboard) {
       cordova.plugins.Keyboard.hideKeyboardAccessoryBar(true);
@@ -47,7 +47,7 @@ angular.module("starter", ["ionic", "starter.controllers", "starter.services"]).
   return $urlRouterProvider.otherwise("/app/guides");
 });
 
-angular.module("starter.controllers", []).controller("AppCtrl", function($scope, $ionicModal, $timeout) {
+angular.module("app.controllers", []).controller("AppCtrl", function($scope, $ionicModal, $timeout) {
   $scope.loginData = {};
   $ionicModal.fromTemplateUrl("templates/login.html", {
     scope: $scope
@@ -80,7 +80,7 @@ angular.module("starter.controllers", []).controller("AppCtrl", function($scope,
   });
 });
 
-angular.module("starter.services", []).service("LocalStorage", function() {
+angular.module("app.services", []).service("LocalStorage", function() {
   var prefix;
   prefix = "_solar";
   return {
@@ -107,6 +107,7 @@ angular.module("starter.services", []).service("LocalStorage", function() {
       storage = LocalStorage.get("guide");
       if (storage === null) {
         LocalStorage.set("guide", {});
+        storage = {};
       }
       return _(guides).each(function(guide) {
         return guide.hasRead = storage[guide.id] || false;

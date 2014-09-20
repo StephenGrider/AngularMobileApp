@@ -1,4 +1,4 @@
-angular.module("starter.services", [])
+angular.module("app.services", [])
 
 .service("LocalStorage", ->
   prefix = "_solar"
@@ -21,6 +21,7 @@ angular.module("starter.services", [])
 
     if storage is null
       LocalStorage.set("guide", {})
+      storage = {}
 
     _(guides).each (guide) ->
       guide.hasRead = storage[guide.id] || false

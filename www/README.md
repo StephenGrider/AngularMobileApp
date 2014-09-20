@@ -1,4 +1,4 @@
-This is an addon starter template for the [Ionic Framework](http://ionicframework.com/).
+This is an addon app template for the [Ionic Framework](http://ionicframework.com/).
 
 ## How to use this template
 
@@ -8,7 +8,7 @@ To use this, either create a new ionic project using the ionic node.js utility, 
 
 ### With the Ionic tool:
 
-Take the name after `ionic-starter-`, and that is the name of the template to be used when using the `ionic start` command below:
+Take the name after `ionic-app-`, and that is the name of the template to be used when using the `ionic start` command below:
 
 ```bash
 $ sudo npm install -g ionic cordova

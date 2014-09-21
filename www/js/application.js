@@ -1,4 +1,4 @@
-angular.module("app", ["ionic", "app.controllers", "app.services"]).run(function($ionicPlatform) {
+angular.module("app", ["ionic", "app.controllers", "app.services", "app.directives", "ngFx"]).run(function($ionicPlatform) {
   return $ionicPlatform.ready(function() {
     if (window.cordova && window.cordova.plugins.Keyboard) {
       cordova.plugins.Keyboard.hideKeyboardAccessoryBar(true);
@@ -25,6 +25,7 @@ angular.module("app", ["ionic", "app.controllers", "app.services"]).run(function
     url: "/browse",
     views: {
       menuContent: {
+        controller: "CalculatorCtrl",
         templateUrl: "templates/browse.html"
       }
     }
@@ -78,6 +79,15 @@ angular.module("app.controllers", []).controller("AppCtrl", function($scope, $io
     $scope.guide.hasRead = true;
     return GuideStorage.setGuideStatus($stateParams.guideId, $scope.guide.hasRead);
   });
+}).controller("CalculatorCtrl", function($scope) {
+  return $scope.monthlyPayment = 50;
+});
+
+angular.module("app.directives", []).directive('slideCalculator', function() {
+  return {
+    templateUrl: 'templates/directives/slide-calculator.html',
+    restrict: 'E'
+  };
 });
 
 angular.module("app.services", []).service("LocalStorage", function() {

@@ -2,6 +2,8 @@ angular.module("app", [
   "ionic"
   "app.controllers"
   "app.services"
+  "app.directives"
+  "ngFx"
 ]).run(($ionicPlatform) ->
   $ionicPlatform.ready ->
     cordova.plugins.Keyboard.hideKeyboardAccessoryBar true  if window.cordova and window.cordova.plugins.Keyboard
@@ -23,6 +25,7 @@ angular.module("app", [
     url: "/browse"
     views:
       menuContent:
+        controller: "CalculatorCtrl"
         templateUrl: "templates/browse.html"
   ).state("app.guides",
     url: "/guides"
@@ -37,6 +40,4 @@ angular.module("app", [
         templateUrl: "templates/guide.html"
         controller: "GuideCtrl"
 
-
-  # if none of the above states are matched, use this as the fallback
   $urlRouterProvider.otherwise "/app/guides"

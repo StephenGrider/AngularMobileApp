@@ -36,7 +36,12 @@ angular.module("app.controllers", [])
     )
 )
 
-.controller("CalculatorCtrl", ($scope) ->
+.controller("CalculatorCtrl", ($scope, Financials) ->
   $scope.monthlyPayment = 50
-  
+
+  Financials.get()
+    .success((resp) ->
+      console.log(resp)
+    )
+
 )

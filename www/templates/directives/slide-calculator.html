@@ -1,12 +1,9 @@
-<div class="item item-avatar">
-  <img src="venkman.jpg">
-  <h2>Current Montly Electric Bill</h2>
-  <div class="range">
-    <i class="icon ion-social-usd-outline"></i>
-    <input type="range" ng-model="monthlyPayment">
-    <i class="icon ion-social-usd"></i>
-  </div>
-  <div class="monthly-currency" ng-class="{green: true}">
-    {{monthlyPayment*5}} $/Month
-  </div>
+<h2>Current Montly Electric Bill</h2>
+<div class="range">
+  <i class="icon ion-social-usd-outline"></i>
+  <input type="range" ng-model="monthlyPayment">
+  <i class="icon ion-social-usd"></i>
+</div>
+<div class="monthly-currency" ng-class="{green: true}">
+  {{monthlyPayment*5}} $/Month
 </div>

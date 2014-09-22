@@ -5,12 +5,23 @@
   <ion-content class="has-header calculator">
 
     <div class="list">
-      <slide-calculator></slide-calculator>
-      
+
+      <li class="item">
+        <h2>Zip Code</h2>
+        <div class="monthly-currency" ng-class="{green: true}">
+          <div class="list list-inset">
+            <label class="item item-input">
+              <input type="text" placeholder="93401">
+            </label>
+          </div>
+        </div>
+      </li>
+
+      <li class="item">
+        <slide-calculator></slide-calculator>
+      </li>
+
     </div>
-
-
-
 
   </ion-content>
 </ion-view>

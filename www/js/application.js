@@ -79,8 +79,11 @@ angular.module("app.controllers", []).controller("AppCtrl", function($scope, $io
     $scope.guide.hasRead = true;
     return GuideStorage.setGuideStatus($stateParams.guideId, $scope.guide.hasRead);
   });
-}).controller("CalculatorCtrl", function($scope) {
-  return $scope.monthlyPayment = 50;
+}).controller("CalculatorCtrl", function($scope, Financials) {
+  $scope.monthlyPayment = 50;
+  return Financials.get().success(function(resp) {
+    return console.log(resp);
+  });
 });
 
 angular.module("app.directives", []).directive('slideCalculator', function() {
@@ -138,6 +141,20 @@ angular.module("app.services", []).service("LocalStorage", function() {
       var contactDetails;
       contactDetails = new ContactDetails(details);
       return contactDetails.save();
+    }
+  };
+}).service("Financials", function($http) {
+  var performanceData, url;
+  performanceData = null;
+  url = 'https://geostellar.com/api/v1/reports/search';
+  return {
+    get: function(zipCode) {
+      return $http.get(url, {
+        params: {
+          api_key: window.geoStellar,
+          address: 93401
+        }
+      });
     }
   };
 });

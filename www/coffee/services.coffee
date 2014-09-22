@@ -39,3 +39,15 @@ angular.module("app.services", [])
     contactDetails = new ContactDetails(details)
     contactDetails.save()
 )
+
+.service("Financials", ($http) ->
+  performanceData = null
+  url = 'https://geostellar.com/api/v1/reports/search'
+
+  get: (zipCode) ->
+    $http.get url,
+      params:
+        api_key: window.geoStellar
+        address: 93401
+
+)

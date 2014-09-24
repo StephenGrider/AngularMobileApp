@@ -42,12 +42,15 @@ angular.module("app.services", [])
 
 .service("Financials", ($http) ->
   performanceData = null
-  url = 'https://geostellar.com/api/v1/reports/search'
+  url = window.proxy_address
 
-  get: (zipCode) ->
-    $http.get url,
-      params:
-        api_key: window.geoStellar
-        address: 93401
+  get: (options) ->
+    params =
+      api_key: window.geoStellar
+      address: options?.zip || 93401
+      proxy_key: window.proxy_key
 
+    _.extend(params, options?.params)
+
+    $http.get url, params: params
 )

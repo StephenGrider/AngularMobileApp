@@ -146,14 +146,18 @@ angular.module("app.services", []).service("LocalStorage", function() {
 }).service("Financials", function($http) {
   var performanceData, url;
   performanceData = null;
-  url = 'https://geostellar.com/api/v1/reports/search';
+  url = window.proxy_address;
   return {
-    get: function(zipCode) {
+    get: function(options) {
+      var params;
+      params = {
+        api_key: window.geoStellar,
+        address: (options != null ? options.zip : void 0) || 93401,
+        proxy_key: window.proxy_key
+      };
+      _.extend(params, options != null ? options.params : void 0);
       return $http.get(url, {
-        params: {
-          api_key: window.geoStellar,
-          address: 93401
-        }
+        params: params
       });
     }
   };

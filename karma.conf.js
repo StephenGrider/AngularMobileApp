@@ -19,6 +19,7 @@ module.exports = function(config) {
       'www/lib/angular-mocks/angular-mocks.js',
       'www/lib/underscore/underscore.js',
       'www/lib/parse/parse-1.3.0.min.js',
+      'www/lib/ngFx/dist/ngFx.js',
       'www/**/*.coffee',
       'specs/**/*.coffee'
     ],

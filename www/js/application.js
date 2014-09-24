@@ -80,10 +80,26 @@ angular.module("app.controllers", []).controller("AppCtrl", function($scope, $io
     return GuideStorage.setGuideStatus($stateParams.guideId, $scope.guide.hasRead);
   });
 }).controller("CalculatorCtrl", function($scope, Financials) {
+  var onFinancialsFinally, onFinancialsSuccess;
   $scope.monthlyPayment = 50;
-  return Financials.get().success(function(resp) {
-    return console.log(resp);
-  });
+  $scope.showZip = true;
+  $scope.locationData = {};
+  onFinancialsSuccess = (function(_this) {
+    return function(resp) {
+      return console.log(resp);
+    };
+  })(this);
+  onFinancialsFinally = (function(_this) {
+    return function() {
+      return $scope.spinner = false;
+    };
+  })(this);
+  return $scope.submitZip = function() {
+    $scope.spinner = true;
+    return Financials.get({
+      zip: $scope.locationData.zip
+    }).success(onFinancialsSuccess)["finally"](onFinancialsFinally);
+  };
 });
 
 angular.module("app.directives", []).directive('slideCalculator', function() {

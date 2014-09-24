@@ -38,10 +38,18 @@ angular.module("app.controllers", [])
 
 .controller("CalculatorCtrl", ($scope, Financials) ->
   $scope.monthlyPayment = 50
+  $scope.showZip = true
+  $scope.locationData = {}
 
-  Financials.get()
-    .success((resp) ->
-      console.log(resp)
-    )
+  onFinancialsSuccess = (resp) =>
+    console.log resp
+
+  onFinancialsFinally = => $scope.spinner = false
+
+  $scope.submitZip = ->
+    $scope.spinner = true
+    Financials.get(zip: $scope.locationData.zip)
+      .success(onFinancialsSuccess)
+      .finally(onFinancialsFinally)
 
 )

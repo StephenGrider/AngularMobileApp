@@ -86,7 +86,8 @@ angular.module("app.controllers", []).controller("AppCtrl", function($scope, $io
   $scope.locationData = {};
   onFinancialsSuccess = (function(_this) {
     return function(resp) {
-      return console.log(resp);
+      $scope.showZip = false;
+      return $scope.data = resp;
     };
   })(this);
   onFinancialsFinally = (function(_this) {
@@ -105,6 +106,11 @@ angular.module("app.controllers", []).controller("AppCtrl", function($scope, $io
 angular.module("app.directives", []).directive('slideCalculator', function() {
   return {
     templateUrl: 'templates/directives/slide-calculator.html',
+    restrict: 'E'
+  };
+}).directive('zipEntry', function() {
+  return {
+    templateUrl: 'templates/directives/zip-entry.html',
     restrict: 'E'
   };
 });

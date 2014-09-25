@@ -7,3 +7,41 @@
 <div class="monthly-currency" ng-class="{green: true}">
   {{monthlyPayment*5}} $/Month
 </div>
+
+<div class="list card">
+  <img class="list-icon" src="img/sun.png">
+  <div class="item item-avatar">
+    <img src="img/sun.png">
+    <h2>{{data.address.city}}</h2>
+    <p>{{data.address.state}}</p>
+  </div>
+
+  <div class="item item-body">
+    <h2 class="system-size-large">
+      {{data.system.system_size_kw}}
+    </h2>
+    <p>
+      Ideal System Size
+    </p>
+    <p>
+      <a href="#" class="subdued">1 Like</a>
+      <a href="#" class="subdued">5 Comments</a>
+    </p>
+  </div>
+
+  <div class="item tabs tabs-secondary tabs-icon-left">
+    <a class="tab-item" href="#">
+      <i class="icon ion-thumbsup"></i>
+      Like
+    </a>
+    <a class="tab-item" href="#">
+      <i class="icon ion-chatbox"></i>
+      Comment
+    </a>
+    <a class="tab-item" href="#">
+      <i class="icon ion-share"></i>
+      Share
+    </a>
+  </div>
+
+</div>

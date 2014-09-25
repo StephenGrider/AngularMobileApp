@@ -1,0 +1,20 @@
+<div class="item item-divider">
+  Ok, lets get started!
+</div>
+<div class="item item-text-wrap">
+  To figure out how energy your solar system will produce,
+  we need to know where it will be installed.  Please
+  enter your zip code below.
+</div>
+<div class="item item-divider">
+  <h2>Zip Code</h2>
+  <div class="monthly-currency" ng-class="{green: true}">
+    <label class="item item-input">
+      <input type="text" ng-model="locationData.zip" placeholder="93401">
+    </label>
+
+    <button ng-click="submitZip()" class="button button-full button-positive">
+      Go
+    </button>
+  </div>
+</div>

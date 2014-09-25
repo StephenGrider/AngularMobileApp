@@ -18,29 +18,24 @@
 
   <div class="item item-body">
     <h2 class="system-size-large">
-      {{data.system.system_size_kw}}
+      {{data.system.system_size_kw}} kw
     </h2>
-    <p>
+    <p class="center">
       Ideal System Size
-    </p>
-    <p>
-      <a href="#" class="subdued">1 Like</a>
-      <a href="#" class="subdued">5 Comments</a>
     </p>
   </div>
 
   <div class="item tabs tabs-secondary tabs-icon-left">
-    <a class="tab-item" href="#">
-      <i class="icon ion-thumbsup"></i>
-      Like
+    <a class="tab-item benefit" href="#">
+      <i class="icon ion-flash"></i>
+      {{data.benefits.electricity_usage_offset_percent}}% Energy Use Offset
     </a>
-    <a class="tab-item" href="#">
-      <i class="icon ion-chatbox"></i>
-      Comment
-    </a>
-    <a class="tab-item" href="#">
-      <i class="icon ion-share"></i>
-      Share
+  </div>
+
+  <div class="item tabs tabs-secondary tabs-icon-left">
+    <a class="tab-item benefit" href="#">
+      <i class="icon ion-social-usd"></i>
+      {{data.benefits.lifetime_electricity_value}} Lifetime Value
     </a>
   </div>
 

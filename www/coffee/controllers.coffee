@@ -42,6 +42,7 @@ angular.module("app.controllers", [])
   $scope.locationData = {}
 
   onFinancialsSuccess = (resp) =>
+    console.log resp
     $scope.showZip = false
     $scope.data = resp
 

@@ -16,11 +16,20 @@
 }
 
 .calculator {
+  .center {
+    text-align: center;
+  }
+
   .monthly-currency {
     text-align: center;
   }
 
   .system-size-large {
     text-align: center;
+    font-size: 50px;
+  }
+
+  .benefit {
+    display: block;
   }
 }

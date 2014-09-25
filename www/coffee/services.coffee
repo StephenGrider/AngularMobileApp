@@ -42,13 +42,18 @@ angular.module("app.services", [])
 
 .service("Financials", ($http) ->
   performanceData = null
-  url = window.proxy_address
+  url = window.nrel_address
 
   get: (options) ->
     params =
-      api_key: window.geoStellar
+      api_key: window.nrel_key
       address: options?.zip || 93401
-      proxy_key: window.proxy_key
+      system_capacity: '5'
+      module_type: 0
+      losses: 4
+      array_type: 1
+      tilt: 14
+      azimuth: 180
 
     _.extend(params, options?.params)
 

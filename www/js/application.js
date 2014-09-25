@@ -86,6 +86,7 @@ angular.module("app.controllers", []).controller("AppCtrl", function($scope, $io
   $scope.locationData = {};
   onFinancialsSuccess = (function(_this) {
     return function(resp) {
+      console.log(resp);
       $scope.showZip = false;
       return $scope.data = resp;
     };
@@ -168,14 +169,19 @@ angular.module("app.services", []).service("LocalStorage", function() {
 }).service("Financials", function($http) {
   var performanceData, url;
   performanceData = null;
-  url = window.proxy_address;
+  url = window.nrel_address;
   return {
     get: function(options) {
       var params;
       params = {
-        api_key: window.geoStellar,
+        api_key: window.nrel_key,
         address: (options != null ? options.zip : void 0) || 93401,
-        proxy_key: window.proxy_key
+        system_capacity: '5',
+        module_type: 0,
+        losses: 4,
+        array_type: 1,
+        tilt: 14,
+        azimuth: 180
       };
       _.extend(params, options != null ? options.params : void 0);
       return $http.get(url, {

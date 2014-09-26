@@ -41,17 +41,15 @@ angular.module("app.controllers", [])
   $scope.showZip = true
   $scope.locationData = {}
 
-  onFinancialsSuccess = (resp) =>
-    console.log resp
-    $scope.showZip = false
-    $scope.data = resp
+  onFinancialsSuccess = ->
+    $scope.data = Financials.getProduction(250)
 
   onFinancialsFinally = => $scope.spinner = false
 
   $scope.submitZip = ->
     $scope.spinner = true
     Financials.get(zip: $scope.locationData.zip)
-      .success(onFinancialsSuccess)
+      .then(onFinancialsSuccess)
       .finally(onFinancialsFinally)
 
 )

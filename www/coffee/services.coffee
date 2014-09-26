@@ -43,19 +43,54 @@ angular.module("app.services", [])
 .service("Financials", ($http) ->
   performanceData = null
   url = window.nrel_address
+  kwhCost = .15
+  systemLifeYears = 25
 
-  get: (options) ->
-    params =
-      api_key: window.nrel_key
-      address: options?.zip || 93401
-      system_capacity: '5'
-      module_type: 0
-      losses: 4
-      array_type: 1
-      tilt: 14
-      azimuth: 180
+  serviceObj =
+    get: (options) ->
+      params =
+        api_key: window.nrel_key
+        address: options?.zip || 93401
+        system_capacity: '5'
+        module_type: 0
+        losses: 4
+        array_type: 1
+        tilt: 14
+        azimuth: 180
 
-    _.extend(params, options?.params)
+      _.extend(params, options?.params)
 
-    $http.get url, params: params
+      $http.get(url, params: params)
+        .then(serviceObj._parseResponse)
+
+    _parseResponse: (resp) ->
+      serviceObj.acAnnual = resp.data.outputs.ac_annual
+      serviceObj.acMonthly = resp.data.outputs.ac_monthly
+
+    _getMonthlyValue: ->
+      _.map(serviceObj.acMonthly, (monthly) -> monthly * kwhCost)
+
+    _getAnnualValue: ->
+      serviceObj.acAnnual * kwhCost
+
+    _getMonthlyBillOffset: (monthlyBill) ->
+      monthlyBill - serviceObj._getAnnualValue() / 12
+
+    _getMonthlyBillOffsetPercent: (monthlyBill) ->
+      (monthlyBill - serviceObj._getAnnualValue() / 12)
+
+    _getLifetimeSystemValue: ->
+      serviceObj._getAnnualValue() * systemLifeYears
+
+    getProduction: (monthlyBill) ->
+      throw new Error('Production data must be loaded') unless serviceObj.acAnnual and serviceObj.acMonthly
+
+      acAnnual: serviceObj.acAnnual
+      acMonthly: serviceObj.acMonthly
+      monthlyValue : serviceObj._getMonthlyValue()
+      annualValue: serviceObj._getAnnualValue()
+      monthlyBillOffset: serviceObj._getMonthlyBillOffset(monthlyBill)
+      monthlyBillOffsetPercent: serviceObj._getMonthlyBillOffsetPercent(monthlyBill)
+      lifetimeSystemValue: serviceObj._getLifetimeSystemValue()
+
 )

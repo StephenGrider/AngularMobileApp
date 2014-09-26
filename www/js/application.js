@@ -81,11 +81,13 @@ angular.module("app.controllers", []).controller("AppCtrl", function($scope, $io
   });
 }).controller("CalculatorCtrl", function($scope, Financials) {
   var onFinancialsFinally, onFinancialsSuccess;
-  $scope.monthlyPayment = 50;
+  $scope.monthlyPayment = 250;
   $scope.showZip = true;
   $scope.locationData = {};
   onFinancialsSuccess = function() {
-    return $scope.data = Financials.getProduction(250);
+    Financials.setMonthlyBill($scope.monthlyPayment);
+    $scope.data = Financials.getProduction(250);
+    return $scope.showZip = false;
   };
   onFinancialsFinally = (function(_this) {
     return function() {
@@ -100,10 +102,16 @@ angular.module("app.controllers", []).controller("AppCtrl", function($scope, $io
   };
 });
 
-angular.module("app.directives", []).directive('slideCalculator', function() {
+angular.module("app.directives", []).directive('slideCalculator', function(Financials) {
   return {
     templateUrl: 'templates/directives/slide-calculator.html',
-    restrict: 'E'
+    restrict: 'E',
+    link: function($scope, ele, attrs) {
+      return ele.find('input').bind('input', function(a) {
+        $scope.data = Financials.getProduction(a.target.value);
+        return console.log($scope.data);
+      });
+    }
   };
 }).directive('zipEntry', function() {
   return {
@@ -198,26 +206,35 @@ angular.module("app.services", []).service("LocalStorage", function() {
     _getAnnualValue: function() {
       return serviceObj.acAnnual * kwhCost;
     },
-    _getMonthlyBillOffset: function(monthlyBill) {
-      return monthlyBill - serviceObj._getAnnualValue() / 12;
+    _getMonthlyBillOffset: function() {
+      return serviceObj.getMonthlyBill() - serviceObj._getAnnualValue() / 12;
     },
-    _getMonthlyBillOffsetPercent: function(monthlyBill) {
-      return monthlyBill - serviceObj._getAnnualValue() / 12;
+    _getMonthlyBillOffsetPercent: function() {
+      return serviceObj.getMonthlyBill() - serviceObj._getAnnualValue() / 12;
     },
     _getLifetimeSystemValue: function() {
       return serviceObj._getAnnualValue() * systemLifeYears;
     },
+    setMonthlyBill: function(monthlyBill) {
+      return serviceObj.monthlyBill = monthlyBill;
+    },
+    getMonthlyBill: function() {
+      return serviceObj.monthlyBill;
+    },
     getProduction: function(monthlyBill) {
       if (!(serviceObj.acAnnual && serviceObj.acMonthly)) {
         throw new Error('Production data must be loaded');
+      }
+      if (monthlyBill) {
+        serviceObj.monthlyBill = monthlyBill;
       }
       return {
         acAnnual: serviceObj.acAnnual,
         acMonthly: serviceObj.acMonthly,
         monthlyValue: serviceObj._getMonthlyValue(),
         annualValue: serviceObj._getAnnualValue(),
-        monthlyBillOffset: serviceObj._getMonthlyBillOffset(monthlyBill),
-        monthlyBillOffsetPercent: serviceObj._getMonthlyBillOffsetPercent(monthlyBill),
+        monthlyBillOffset: serviceObj._getMonthlyBillOffset(),
+        monthlyBillOffsetPercent: serviceObj._getMonthlyBillOffsetPercent(),
         lifetimeSystemValue: serviceObj._getLifetimeSystemValue()
       };
     }

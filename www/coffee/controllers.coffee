@@ -37,12 +37,14 @@ angular.module("app.controllers", [])
 )
 
 .controller("CalculatorCtrl", ($scope, Financials) ->
-  $scope.monthlyPayment = 50
+  $scope.monthlyPayment = 250
   $scope.showZip = true
   $scope.locationData = {}
 
   onFinancialsSuccess = ->
+    Financials.setMonthlyBill($scope.monthlyPayment)
     $scope.data = Financials.getProduction(250)
+    $scope.showZip = false
 
   onFinancialsFinally = => $scope.spinner = false
 

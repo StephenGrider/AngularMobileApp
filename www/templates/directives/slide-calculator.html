@@ -1,11 +1,11 @@
 <h2>Current Montly Electric Bill</h2>
 <div class="range">
   <i class="icon ion-social-usd-outline"></i>
-  <input type="range" ng-model="monthlyPayment">
+  <input type="range" ng-model="monthlyPayment" min="0" step="5" max="500">
   <i class="icon ion-social-usd"></i>
 </div>
 <div class="monthly-currency" ng-class="{green: true}">
-  {{monthlyPayment*5}} $/Month
+  {{monthlyPayment}} $/Month
 </div>
 
 <div class="list card">
@@ -28,7 +28,7 @@
   <div class="item tabs tabs-secondary tabs-icon-left">
     <a class="tab-item benefit" href="#">
       <i class="icon ion-flash"></i>
-      {{data.benefits.electricity_usage_offset_percent}}% Energy Use Offset
+      {{data.monthlyBillOffset}}% Energy Use Offset
     </a>
   </div>
 

@@ -73,24 +73,32 @@ angular.module("app.services", [])
     _getAnnualValue: ->
       serviceObj.acAnnual * kwhCost
 
-    _getMonthlyBillOffset: (monthlyBill) ->
-      monthlyBill - serviceObj._getAnnualValue() / 12
+    _getMonthlyBillOffset: ->
+      serviceObj.getMonthlyBill() - serviceObj._getAnnualValue() / 12
 
-    _getMonthlyBillOffsetPercent: (monthlyBill) ->
-      (monthlyBill - serviceObj._getAnnualValue() / 12)
+    _getMonthlyBillOffsetPercent: ->
+      (serviceObj.getMonthlyBill() - serviceObj._getAnnualValue() / 12)
 
     _getLifetimeSystemValue: ->
       serviceObj._getAnnualValue() * systemLifeYears
 
+    setMonthlyBill: (monthlyBill) ->
+      serviceObj.monthlyBill = monthlyBill
+
+    getMonthlyBill: ->
+      serviceObj.monthlyBill
+
     getProduction: (monthlyBill) ->
       throw new Error('Production data must be loaded') unless serviceObj.acAnnual and serviceObj.acMonthly
+
+      serviceObj.monthlyBill = monthlyBill if monthlyBill
 
       acAnnual: serviceObj.acAnnual
       acMonthly: serviceObj.acMonthly
       monthlyValue : serviceObj._getMonthlyValue()
       annualValue: serviceObj._getAnnualValue()
-      monthlyBillOffset: serviceObj._getMonthlyBillOffset(monthlyBill)
-      monthlyBillOffsetPercent: serviceObj._getMonthlyBillOffsetPercent(monthlyBill)
+      monthlyBillOffset: serviceObj._getMonthlyBillOffset()
+      monthlyBillOffsetPercent: serviceObj._getMonthlyBillOffsetPercent()
       lifetimeSystemValue: serviceObj._getLifetimeSystemValue()
 
 )

@@ -42,6 +42,7 @@ angular.module("app.controllers", [])
   $scope.locationData = {}
 
   onFinancialsSuccess = ->
+    console.log(Financials.getProduction(250))
     Financials.setMonthlyBill($scope.monthlyPayment)
     $scope.data = Financials.getProduction(250)
     $scope.showZip = false

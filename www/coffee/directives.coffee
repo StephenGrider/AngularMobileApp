@@ -5,8 +5,9 @@ angular.module("app.directives", [])
   restrict: 'E'
   link: ($scope, ele, attrs) ->
     ele.find('input').bind('input', (a) ->
+
       $scope.data = Financials.getProduction(a.target.value)
-      console.log $scope.data
+      console.log $scope.data.idealSystemSize
     )
 )
 

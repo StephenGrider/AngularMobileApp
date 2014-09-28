@@ -85,6 +85,7 @@ angular.module("app.controllers", []).controller("AppCtrl", function($scope, $io
   $scope.showZip = true;
   $scope.locationData = {};
   onFinancialsSuccess = function() {
+    console.log(Financials.getProduction(250));
     Financials.setMonthlyBill($scope.monthlyPayment);
     $scope.data = Financials.getProduction(250);
     return $scope.showZip = false;
@@ -109,7 +110,7 @@ angular.module("app.directives", []).directive('slideCalculator', function(Finan
     link: function($scope, ele, attrs) {
       return ele.find('input').bind('input', function(a) {
         $scope.data = Financials.getProduction(a.target.value);
-        return console.log($scope.data);
+        return console.log($scope.data.idealSystemSize);
       });
     }
   };
@@ -182,7 +183,7 @@ angular.module("app.services", []).service("LocalStorage", function() {
       params = {
         api_key: window.nrel_key,
         address: (options != null ? options.zip : void 0) || 93401,
-        system_capacity: '5',
+        system_capacity: 1,
         module_type: 0,
         losses: 4,
         array_type: 1,
@@ -207,13 +208,16 @@ angular.module("app.services", []).service("LocalStorage", function() {
       return serviceObj.acAnnual * kwhCost;
     },
     _getMonthlyBillOffset: function() {
-      return serviceObj.getMonthlyBill() - serviceObj._getAnnualValue() / 12;
+      return ~~(serviceObj.getMonthlyBill() - serviceObj._getAnnualValue() / 12);
     },
     _getMonthlyBillOffsetPercent: function() {
-      return serviceObj.getMonthlyBill() - serviceObj._getAnnualValue() / 12;
+      return ~~(serviceObj.getMonthlyBill() - serviceObj._getAnnualValue() / 12);
     },
     _getLifetimeSystemValue: function() {
-      return serviceObj._getAnnualValue() * systemLifeYears;
+      return ~~(serviceObj._getAnnualValue() * systemLifeYears * serviceObj._getIdealSystemSize());
+    },
+    _getIdealSystemSize: function() {
+      return serviceObj.getMonthlyBill() / serviceObj._getAnnualValue() * 12;
     },
     setMonthlyBill: function(monthlyBill) {
       return serviceObj.monthlyBill = monthlyBill;
@@ -235,7 +239,8 @@ angular.module("app.services", []).service("LocalStorage", function() {
         annualValue: serviceObj._getAnnualValue(),
         monthlyBillOffset: serviceObj._getMonthlyBillOffset(),
         monthlyBillOffsetPercent: serviceObj._getMonthlyBillOffsetPercent(),
-        lifetimeSystemValue: serviceObj._getLifetimeSystemValue()
+        lifetimeSystemValue: serviceObj._getLifetimeSystemValue(),
+        idealSystemSize: serviceObj._getIdealSystemSize()
       };
     }
   };

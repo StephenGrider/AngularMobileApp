@@ -51,7 +51,7 @@ angular.module("app.services", [])
       params =
         api_key: window.nrel_key
         address: options?.zip || 93401
-        system_capacity: '5'
+        system_capacity: 1
         module_type: 0
         losses: 4
         array_type: 1
@@ -67,6 +67,7 @@ angular.module("app.services", [])
       serviceObj.acAnnual = resp.data.outputs.ac_annual
       serviceObj.acMonthly = resp.data.outputs.ac_monthly
 
+
     _getMonthlyValue: ->
       _.map(serviceObj.acMonthly, (monthly) -> monthly * kwhCost)
 
@@ -74,13 +75,16 @@ angular.module("app.services", [])
       serviceObj.acAnnual * kwhCost
 
     _getMonthlyBillOffset: ->
-      serviceObj.getMonthlyBill() - serviceObj._getAnnualValue() / 12
+      ~~(serviceObj.getMonthlyBill() - serviceObj._getAnnualValue() / 12)
 
     _getMonthlyBillOffsetPercent: ->
-      (serviceObj.getMonthlyBill() - serviceObj._getAnnualValue() / 12)
+      ~~((serviceObj.getMonthlyBill() - serviceObj._getAnnualValue() / 12))
 
     _getLifetimeSystemValue: ->
-      serviceObj._getAnnualValue() * systemLifeYears
+      ~~(serviceObj._getAnnualValue() * systemLifeYears * serviceObj._getIdealSystemSize())
+
+    _getIdealSystemSize: ->
+      serviceObj.getMonthlyBill() / serviceObj._getAnnualValue() * 12
 
     setMonthlyBill: (monthlyBill) ->
       serviceObj.monthlyBill = monthlyBill
@@ -100,5 +104,6 @@ angular.module("app.services", [])
       monthlyBillOffset: serviceObj._getMonthlyBillOffset()
       monthlyBillOffsetPercent: serviceObj._getMonthlyBillOffsetPercent()
       lifetimeSystemValue: serviceObj._getLifetimeSystemValue()
+      idealSystemSize: serviceObj._getIdealSystemSize()
 
 )

@@ -206,7 +206,8 @@ angular.module("app.services", []).service("LocalStorage", function() {
       return {
         annualValue: serviceObj._getAnnualValue(),
         idealSystemSize: serviceObj._getIdealSystemSize(),
-        lifeTimeValue: serviceObj._getLifeTimeValue()
+        lifeTimeValue: serviceObj._getLifeTimeValue(),
+        monthlyProduction: serviceObj.acAnnual / 12
       };
     },
     _parseResponse: function(resp) {

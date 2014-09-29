@@ -74,6 +74,7 @@ angular.module("app.services", [])
       annualValue: serviceObj._getAnnualValue()
       idealSystemSize: serviceObj._getIdealSystemSize()
       lifeTimeValue: serviceObj._getLifeTimeValue()
+      monthlyProduction: serviceObj.acAnnual / 12
 
     _parseResponse: (resp) ->
       serviceObj.acAnnual = resp.data.outputs.ac_annual

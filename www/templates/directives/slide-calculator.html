@@ -1,4 +1,4 @@
-<h2>Current Montly Electric Bill</h2>
+<h2>Current Monthly Electric Bill</h2>
 <div class="range">
   <i class="icon ion-social-usd-outline"></i>
   <input type="range" ng-model="monthlyPayment" min="0" step="5" max="500">
@@ -18,7 +18,7 @@
 
   <div class="item item-body">
     <h2 class="system-size-large">
-      {{data.system.system_size_kw}} kw
+      {{data.idealSystemSize}} kw
     </h2>
     <p class="center">
       Ideal System Size
@@ -27,15 +27,15 @@
 
   <div class="item tabs tabs-secondary tabs-icon-left">
     <a class="tab-item benefit" href="#">
-      <i class="icon ion-flash"></i>
-      {{data.monthlyBillOffset}}% Energy Use Offset
+      <i class="icon ion-social-usd"></i>
+      {{data.lifeTimeValue | number: 0}} Lifetime Value
     </a>
   </div>
 
   <div class="item tabs tabs-secondary tabs-icon-left">
     <a class="tab-item benefit" href="#">
-      <i class="icon ion-social-usd"></i>
-      {{data.annualValue * 12}} Lifetime Value
+      <i class="icon ion-flash"></i>
+      {{data.monthlyProduction | number: 0}} kWh per Month
     </a>
   </div>
 

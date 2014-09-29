@@ -43,10 +43,10 @@ angular.module("app.services", [])
 .service("Financials", ($http) ->
   performanceData = null
   url = window.nrel_address
-  kwhCost = .15
-  systemLifeYears = 25
 
   serviceObj =
+    systemLifeYears: 25
+    kwhCost: .17
     get: (options) ->
       params =
         api_key: window.nrel_key
@@ -63,47 +63,22 @@ angular.module("app.services", [])
       $http.get(url, params: params)
         .then(serviceObj._parseResponse)
 
+    setMonthlyBill: (bill) ->
+      serviceObj.monthlyBill = bill
+
     _parseResponse: (resp) ->
       serviceObj.acAnnual = resp.data.outputs.ac_annual
       serviceObj.acMonthly = resp.data.outputs.ac_monthly
 
-
-    _getMonthlyValue: ->
-      _.map(serviceObj.acMonthly, (monthly) -> monthly * kwhCost)
-
-    _getAnnualValue: ->
-      serviceObj.acAnnual * kwhCost
-
-    _getMonthlyBillOffset: ->
-      ~~(serviceObj.getMonthlyBill() - serviceObj._getAnnualValue() / 12)
-
-    _getMonthlyBillOffsetPercent: ->
-      ~~((serviceObj.getMonthlyBill() - serviceObj._getAnnualValue() / 12))
-
-    _getLifetimeSystemValue: ->
-      ~~(serviceObj._getAnnualValue() * systemLifeYears * serviceObj._getIdealSystemSize())
-
-    _getIdealSystemSize: ->
-      serviceObj.getMonthlyBill() / serviceObj._getAnnualValue() * 12
-
-    setMonthlyBill: (monthlyBill) ->
-      serviceObj.monthlyBill = monthlyBill
-
-    getMonthlyBill: ->
+    _getMonthlyBill: ->
       serviceObj.monthlyBill
 
-    getProduction: (monthlyBill) ->
-      throw new Error('Production data must be loaded') unless serviceObj.acAnnual and serviceObj.acMonthly
+    _getIdealSystemSize: ->
+      12 * serviceObj._getMonthlyBill() / serviceObj.kwhCost / serviceObj.acAnnual
 
-      serviceObj.monthlyBill = monthlyBill if monthlyBill
+    _getAnnualValue: ->
+      serviceObj.kwhCost * serviceObj.acAnnual * serviceObj.systemLifeYears * serviceObj._getIdealSystemSize()
 
-      acAnnual: serviceObj.acAnnual
-      acMonthly: serviceObj.acMonthly
-      monthlyValue : serviceObj._getMonthlyValue()
-      annualValue: serviceObj._getAnnualValue()
-      monthlyBillOffset: serviceObj._getMonthlyBillOffset()
-      monthlyBillOffsetPercent: serviceObj._getMonthlyBillOffsetPercent()
-      lifetimeSystemValue: serviceObj._getLifetimeSystemValue()
-      idealSystemSize: serviceObj._getIdealSystemSize()
-
+    _getLifeTimeValue: ->
+      serviceObj._getAnnualValue() * serviceObj.systemLifeYears
 )

@@ -172,12 +172,12 @@ angular.module("app.services", []).service("LocalStorage", function() {
     }
   };
 }).service("Financials", function($http) {
-  var kwhCost, performanceData, serviceObj, systemLifeYears, url;
+  var performanceData, serviceObj, url;
   performanceData = null;
   url = window.nrel_address;
-  kwhCost = .15;
-  systemLifeYears = 25;
   return serviceObj = {
+    systemLifeYears: 25,
+    kwhCost: .17,
     get: function(options) {
       var params;
       params = {
@@ -195,53 +195,24 @@ angular.module("app.services", []).service("LocalStorage", function() {
         params: params
       }).then(serviceObj._parseResponse);
     },
+    setMonthlyBill: function(bill) {
+      return serviceObj.monthlyBill = bill;
+    },
     _parseResponse: function(resp) {
       serviceObj.acAnnual = resp.data.outputs.ac_annual;
       return serviceObj.acMonthly = resp.data.outputs.ac_monthly;
     },
-    _getMonthlyValue: function() {
-      return _.map(serviceObj.acMonthly, function(monthly) {
-        return monthly * kwhCost;
-      });
-    },
-    _getAnnualValue: function() {
-      return serviceObj.acAnnual * kwhCost;
-    },
-    _getMonthlyBillOffset: function() {
-      return ~~(serviceObj.getMonthlyBill() - serviceObj._getAnnualValue() / 12);
-    },
-    _getMonthlyBillOffsetPercent: function() {
-      return ~~(serviceObj.getMonthlyBill() - serviceObj._getAnnualValue() / 12);
-    },
-    _getLifetimeSystemValue: function() {
-      return ~~(serviceObj._getAnnualValue() * systemLifeYears * serviceObj._getIdealSystemSize());
-    },
-    _getIdealSystemSize: function() {
-      return serviceObj.getMonthlyBill() / serviceObj._getAnnualValue() * 12;
-    },
-    setMonthlyBill: function(monthlyBill) {
-      return serviceObj.monthlyBill = monthlyBill;
-    },
-    getMonthlyBill: function() {
+    _getMonthlyBill: function() {
       return serviceObj.monthlyBill;
     },
-    getProduction: function(monthlyBill) {
-      if (!(serviceObj.acAnnual && serviceObj.acMonthly)) {
-        throw new Error('Production data must be loaded');
-      }
-      if (monthlyBill) {
-        serviceObj.monthlyBill = monthlyBill;
-      }
-      return {
-        acAnnual: serviceObj.acAnnual,
-        acMonthly: serviceObj.acMonthly,
-        monthlyValue: serviceObj._getMonthlyValue(),
-        annualValue: serviceObj._getAnnualValue(),
-        monthlyBillOffset: serviceObj._getMonthlyBillOffset(),
-        monthlyBillOffsetPercent: serviceObj._getMonthlyBillOffsetPercent(),
-        lifetimeSystemValue: serviceObj._getLifetimeSystemValue(),
-        idealSystemSize: serviceObj._getIdealSystemSize()
-      };
+    _getIdealSystemSize: function() {
+      return 12 * serviceObj._getMonthlyBill() / serviceObj.kwhCost / serviceObj.acAnnual;
+    },
+    _getAnnualValue: function() {
+      return serviceObj.kwhCost * serviceObj.acAnnual * serviceObj.systemLifeYears * serviceObj._getIdealSystemSize();
+    },
+    _getLifeTimeValue: function() {
+      return serviceObj._getAnnualValue() * serviceObj.systemLifeYears;
     }
   };
 });

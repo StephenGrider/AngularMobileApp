@@ -38,36 +38,56 @@ describe 'App Services Financials', ->
     args = http.get.mostRecentCall.args
     expect(args[1].params.user).toEqual('name')
 
-  it '#_parseResponse', ->
-    service._parseResponse(requestData)
+  describe '#getProduction', ->
+    describe 'monthlyBill is defined', ->
+      it 'returns an object with properties', ->
+        service._parseResponse(requestData)
+        prod = service.getProduction(150)
 
-    expect(service.acAnnual).toEqual(1811.012939453125)
-    expect(service.acMonthly[0]).toEqual(100.66162872314453)
+        expect(prod.annualValue).toEqual('1785.66')
+        expect(prod.idealSystemSize).toEqual('5.8')
+        expect(prod.lifeTimeValue).toEqual(44641.5)
 
-  it '#setMonthlyBill', ->
-    expect(service.monthlyBill).toBeUndefined()
+    describe 'monthlyBill is not defined', ->
+      it 'throws', ->
+        service.monthlyBill = undefined
 
-    service.setMonthlyBill(200)
-    expect(service.monthlyBill).toEqual(200)
+        expect(service.getProduction).toThrow()
 
-  it '#_getIdealSystemSize', ->
-    service.setMonthlyBill(200)
-    ideal = 12*200 / service.kwhCost / requestData.data.outputs.ac_annual
+  describe '#setMonthlyBill', ->
+    it 'sets bill property', ->
+      expect(service.monthlyBill).toBeUndefined()
 
-    service._parseResponse(requestData)
+      service.setMonthlyBill(200)
+      expect(service.monthlyBill).toEqual(200)
 
-    expect(service._getIdealSystemSize()).toEqual(ideal)
+  describe '#_parseResponse', ->
+    it 'parses response object', ->
+      service._parseResponse(requestData)
 
-  it '#_getAnnualValue', ->
-    service._parseResponse(requestData)
-    value = service.kwhCost * service.acAnnual * service.systemLifeYears
-    spyOn(service, '_getIdealSystemSize').andReturn(1)
+      expect(service.acAnnual).toEqual(1811.012939453125)
+      expect(service.acMonthly[0]).toEqual(100.66162872314453)
 
+  describe '#_getIdealSystemSize', ->
+    it 'will return system size', ->
+      service.setMonthlyBill(200)
+      ideal = (12*200 / service.kwhCost / requestData.data.outputs.ac_annual).toFixed(1)
 
-    expect(service._getAnnualValue()).toEqual(value)
+      service._parseResponse(requestData)
 
-  it '#_getLifeTimeValue', ->
-    spyOn(service, '_getAnnualValue').andReturn(3)
-    service.systemLifeYears = 25
+      expect(service._getIdealSystemSize()).toEqual(ideal)
 
-    expect(service._getLifeTimeValue()).toEqual(75)
+  describe '#_getAnnualValue', ->
+    it 'returns annual value', ->
+      service._parseResponse(requestData)
+      value = (service.kwhCost * service.acAnnual).toFixed(2)
+      spyOn(service, '_getIdealSystemSize').andReturn(1)
+
+      expect(service._getAnnualValue()).toEqual(value)
+
+  describe '#_getLifeTimeValue', ->
+    it 'gets the total value of the system, multiplied by system life', ->
+      spyOn(service, '_getAnnualValue').andReturn(3)
+      service.systemLifeYears = 25
+
+      expect(service._getLifeTimeValue()).toEqual(75)

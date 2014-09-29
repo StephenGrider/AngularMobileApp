@@ -198,6 +198,17 @@ angular.module("app.services", []).service("LocalStorage", function() {
     setMonthlyBill: function(bill) {
       return serviceObj.monthlyBill = bill;
     },
+    getProduction: function(bill) {
+      serviceObj.setMonthlyBill(bill);
+      if (!serviceObj.monthlyBill) {
+        throw new Error('Monthly bill must be provided');
+      }
+      return {
+        annualValue: serviceObj._getAnnualValue(),
+        idealSystemSize: serviceObj._getIdealSystemSize(),
+        lifeTimeValue: serviceObj._getLifeTimeValue()
+      };
+    },
     _parseResponse: function(resp) {
       serviceObj.acAnnual = resp.data.outputs.ac_annual;
       return serviceObj.acMonthly = resp.data.outputs.ac_monthly;
@@ -206,10 +217,10 @@ angular.module("app.services", []).service("LocalStorage", function() {
       return serviceObj.monthlyBill;
     },
     _getIdealSystemSize: function() {
-      return 12 * serviceObj._getMonthlyBill() / serviceObj.kwhCost / serviceObj.acAnnual;
+      return (12 * serviceObj._getMonthlyBill() / serviceObj.kwhCost / serviceObj.acAnnual).toFixed(1);
     },
     _getAnnualValue: function() {
-      return serviceObj.kwhCost * serviceObj.acAnnual * serviceObj.systemLifeYears * serviceObj._getIdealSystemSize();
+      return (serviceObj.kwhCost * serviceObj.acAnnual * serviceObj._getIdealSystemSize()).toFixed(2);
     },
     _getLifeTimeValue: function() {
       return serviceObj._getAnnualValue() * serviceObj.systemLifeYears;

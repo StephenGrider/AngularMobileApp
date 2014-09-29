@@ -66,6 +66,15 @@ angular.module("app.services", [])
     setMonthlyBill: (bill) ->
       serviceObj.monthlyBill = bill
 
+    getProduction: (bill) ->
+      serviceObj.setMonthlyBill(bill)
+
+      throw new Error('Monthly bill must be provided') unless serviceObj.monthlyBill
+
+      annualValue: serviceObj._getAnnualValue()
+      idealSystemSize: serviceObj._getIdealSystemSize()
+      lifeTimeValue: serviceObj._getLifeTimeValue()
+
     _parseResponse: (resp) ->
       serviceObj.acAnnual = resp.data.outputs.ac_annual
       serviceObj.acMonthly = resp.data.outputs.ac_monthly
@@ -74,10 +83,10 @@ angular.module("app.services", [])
       serviceObj.monthlyBill
 
     _getIdealSystemSize: ->
-      12 * serviceObj._getMonthlyBill() / serviceObj.kwhCost / serviceObj.acAnnual
+      (12 * serviceObj._getMonthlyBill() / serviceObj.kwhCost / serviceObj.acAnnual).toFixed(1)
 
     _getAnnualValue: ->
-      serviceObj.kwhCost * serviceObj.acAnnual * serviceObj.systemLifeYears * serviceObj._getIdealSystemSize()
+      (serviceObj.kwhCost * serviceObj.acAnnual * serviceObj._getIdealSystemSize()).toFixed(2)
 
     _getLifeTimeValue: ->
       serviceObj._getAnnualValue() * serviceObj.systemLifeYears

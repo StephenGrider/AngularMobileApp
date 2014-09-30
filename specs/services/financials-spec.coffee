@@ -78,7 +78,7 @@ describe 'App Services Financials', ->
       expect(service._getIdealSystemSize()).toEqual(ideal)
 
   describe '#_getAnnualValue', ->
-    it 'returns annual value', ->
+    it 'returns annual value of the system', ->
       service._parseResponse(requestData)
       value = (service.kwhCost * service.acAnnual).toFixed(2)
       spyOn(service, '_getIdealSystemSize').andReturn(1)

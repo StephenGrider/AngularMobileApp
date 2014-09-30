@@ -85,7 +85,6 @@ angular.module("app.controllers", []).controller("AppCtrl", function($scope, $io
   $scope.showZip = true;
   $scope.locationData = {};
   onFinancialsSuccess = function() {
-    console.log(Financials.getProduction(250));
     Financials.setMonthlyBill($scope.monthlyPayment);
     $scope.data = Financials.getProduction(250);
     return $scope.showZip = false;

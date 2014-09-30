@@ -74,7 +74,7 @@ angular.module("app.services", [])
       annualValue: serviceObj._getAnnualValue()
       idealSystemSize: serviceObj._getIdealSystemSize()
       lifeTimeValue: serviceObj._getLifeTimeValue()
-      monthlyProduction: serviceObj.acAnnual / 12
+      monthlyProduction: serviceObj._getMonthlyProduction()
 
     _parseResponse: (resp) ->
       serviceObj.acAnnual = resp.data.outputs.ac_annual
@@ -84,11 +84,35 @@ angular.module("app.services", [])
       serviceObj.monthlyBill
 
     _getIdealSystemSize: ->
-      (12 * serviceObj._getMonthlyBill() / serviceObj.kwhCost / serviceObj.acAnnual).toFixed(1)
+      12 * serviceObj._getMonthlyBill() / serviceObj.kwhCost / serviceObj.acAnnual
 
     _getAnnualValue: ->
-      (serviceObj.kwhCost * serviceObj.acAnnual * serviceObj._getIdealSystemSize()).toFixed(2)
+      serviceObj.kwhCost * serviceObj.acAnnual * serviceObj._getIdealSystemSize()
 
     _getLifeTimeValue: ->
       serviceObj._getAnnualValue() * serviceObj.systemLifeYears
+
+    _getMonthlyProduction: ->
+      serviceObj.acAnnual / 12 * serviceObj._getIdealSystemSize()
+)
+
+.service("Geolocation", ($http) ->
+
+  service =
+    get: (zip) ->
+      params = address: zip || 93401
+
+      $http.get(window.gmap_address, params: params)
+        .then(service._parseResponse)
+
+    _parseResponse: (resp) ->
+      service.city = resp.data.results.address_components[1].short_name
+      service.state = resp.data.results.address_components[2].long_name
+
+    getCity: ->
+      service.city
+
+    getState: ->
+      service.state
+
 )

@@ -9,12 +9,27 @@
 <div class="item item-divider">
   <h2>Zip Code</h2>
   <div class="monthly-currency" ng-class="{green: true}">
-    <label class="item item-input">
-      <input type="text" ng-model="locationData.zip" placeholder="93401">
-    </label>
+    <form name="zipForm">
+      <label class="item item-input">
+        <input
+          type="text"
+          name="zip"
+          ng-model="locationData.zip"
+          placeholder="93401"
+          ng-required="true"
+          ng-minlength="5"
+          ng-maxlength="5"
+          ng-pattern="/(^\d{5}$)|(^\d{5}-\d{4}$)/"
+        >
+      </label>
 
-    <button ng-click="submitZip()" class="button button-full button-positive">
-      Go
-    </button>
+      <button
+        ng-click="submitZip()"
+        class="button button-full button-positive"
+        ng-class="{disabled: !zipForm.zip.$valid}"
+      >
+        Go
+      </button>
+    </form>
   </div>
 </div>

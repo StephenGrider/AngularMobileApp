@@ -12,13 +12,13 @@
   <img class="list-icon" src="img/sun.png">
   <div class="item item-avatar">
     <img src="img/sun.png">
-    <h2>{{data.address.city}}</h2>
-    <p>{{data.address.state}}</p>
+    <h2>{{city}}</h2>
+    <p>{{state}}</p>
   </div>
 
   <div class="item item-body">
     <h2 class="system-size-large">
-      {{data.idealSystemSize}} kw
+      {{data.idealSystemSize | number: 1}} kw
     </h2>
     <p class="center">
       Ideal System Size

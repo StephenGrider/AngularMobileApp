@@ -3,8 +3,12 @@
     <button menu-toggle="left"class="button button-icon icon ion-navicon"></button>
   </ion-nav-buttons>
   <ion-content class="has-header calculator">
+    <div ng-show="ajaxError" class="bar bar-header bar-assertive">
+      <h1 class="title">Oops, something went wrong.</h1>
+    </div>
 
-    <img ng-show="spinner" src="/img/spinner.gif"></img>
+
+    <img ng-show="spinner" src="/img/spinner.gif" class="spinner"></img>
 
     <div ng-show="showZip && !spinner" class="card">
       <zip-entry></zip-entry>

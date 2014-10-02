@@ -7,7 +7,6 @@ angular.module("app.directives", [])
     ele.find('input').bind('input', (a) ->
 
       $scope.data = Financials.getProduction(a.target.value)
-      console.log $scope.data.idealSystemSize
     )
 )
 

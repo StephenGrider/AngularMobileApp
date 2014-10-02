@@ -97,7 +97,6 @@ angular.module("app.services", [])
 )
 
 .service("Geolocation", ($http) ->
-
   service =
     get: (options) ->
       params = address: options.zip || 93401
@@ -115,5 +114,4 @@ angular.module("app.services", [])
 
     getState: ->
       service.state
-
 )

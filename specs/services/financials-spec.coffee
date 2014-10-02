@@ -44,9 +44,10 @@ describe 'App Services Financials', ->
         service._parseResponse(requestData)
         prod = service.getProduction(150)
 
-        expect(prod.annualValue).toEqual('1785.66')
-        expect(prod.idealSystemSize).toEqual('5.8')
-        expect(prod.lifeTimeValue).toEqual(44641.5)
+        expect(prod.annualValue).toEqual(1800)
+        expect(prod.idealSystemSize).toEqual(5.846581801516557)
+        expect(prod.lifeTimeValue).toEqual(45000)
+        expect(prod.monthlyProduction).toEqual(882.3529411764706)
 
     describe 'monthlyBill is not defined', ->
       it 'throws', ->
@@ -71,7 +72,7 @@ describe 'App Services Financials', ->
   describe '#_getIdealSystemSize', ->
     it 'will return system size', ->
       service.setMonthlyBill(200)
-      ideal = (12*200 / service.kwhCost / requestData.data.outputs.ac_annual).toFixed(1)
+      ideal = 12*200 / service.kwhCost / requestData.data.outputs.ac_annual
 
       service._parseResponse(requestData)
 
@@ -80,7 +81,7 @@ describe 'App Services Financials', ->
   describe '#_getAnnualValue', ->
     it 'returns annual value of the system', ->
       service._parseResponse(requestData)
-      value = (service.kwhCost * service.acAnnual).toFixed(2)
+      value = service.kwhCost * service.acAnnual
       spyOn(service, '_getIdealSystemSize').andReturn(1)
 
       expect(service._getAnnualValue()).toEqual(value)
@@ -91,3 +92,10 @@ describe 'App Services Financials', ->
       service.systemLifeYears = 25
 
       expect(service._getLifeTimeValue()).toEqual(75)
+
+  describe '#_getMonthlyProduction', ->
+    it 'multiples annual production for 1kw by system size', ->
+      service._parseResponse(requestData)
+      service.setMonthlyBill(200)
+
+      expect(service._getMonthlyProduction()).toEqual(1176.4705882352941)

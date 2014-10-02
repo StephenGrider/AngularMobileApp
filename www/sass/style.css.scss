@@ -32,4 +32,22 @@
   .benefit {
     display: block;
   }
+
+  .location-wrapper {
+    position: relative;
+  }
+
+  .location-change {
+    float: right;
+    font-size: 11px;
+    bottom: 5%;
+    right: 5%;
+    position: absolute;
+  }
+}
+
+.spinner {
+  margin-left: 35%;
+  width: 30%;
+  margin-top: 20%;
 }

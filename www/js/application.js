@@ -79,26 +79,37 @@ angular.module("app.controllers", []).controller("AppCtrl", function($scope, $io
     $scope.guide.hasRead = true;
     return GuideStorage.setGuideStatus($stateParams.guideId, $scope.guide.hasRead);
   });
-}).controller("CalculatorCtrl", function($scope, Financials) {
-  var onFinancialsFinally, onFinancialsSuccess;
+}).controller("CalculatorCtrl", function($scope, Financials, Geolocation, $q) {
+  var onRequestsFail, onRequestsFinally, onRequestsSuccess;
   $scope.monthlyPayment = 250;
   $scope.showZip = true;
   $scope.locationData = {};
-  onFinancialsSuccess = function() {
+  onRequestsSuccess = function() {
     Financials.setMonthlyBill($scope.monthlyPayment);
     $scope.data = Financials.getProduction(250);
-    return $scope.showZip = false;
+    $scope.city = Geolocation.getCity();
+    $scope.state = Geolocation.getState();
+    $scope.showZip = false;
+    return $scope.ajaxError = false;
   };
-  onFinancialsFinally = (function(_this) {
-    return function() {
-      return $scope.spinner = false;
-    };
-  })(this);
-  return $scope.submitZip = function() {
+  onRequestsFinally = function() {
+    return $scope.spinner = false;
+  };
+  onRequestsFail = function() {
+    return $scope.ajaxError = true;
+  };
+  $scope.submitZip = function() {
     $scope.spinner = true;
-    return Financials.get({
-      zip: $scope.locationData.zip
-    }).then(onFinancialsSuccess)["finally"](onFinancialsFinally);
+    return $q.all([
+      Financials.get({
+        zip: $scope.locationData.zip
+      }), Geolocation.get({
+        zip: $scope.locationData.zip
+      })
+    ]).then(onRequestsSuccess, onRequestsFail)["finally"](onRequestsFinally);
+  };
+  return $scope.showZip = function() {
+    return $scope.showZip = true;
   };
 });
 
@@ -108,8 +119,7 @@ angular.module("app.directives", []).directive('slideCalculator', function(Finan
     restrict: 'E',
     link: function($scope, ele, attrs) {
       return ele.find('input').bind('input', function(a) {
-        $scope.data = Financials.getProduction(a.target.value);
-        return console.log($scope.data.idealSystemSize);
+        return $scope.data = Financials.getProduction(a.target.value);
       });
     }
   };
@@ -206,7 +216,7 @@ angular.module("app.services", []).service("LocalStorage", function() {
         annualValue: serviceObj._getAnnualValue(),
         idealSystemSize: serviceObj._getIdealSystemSize(),
         lifeTimeValue: serviceObj._getLifeTimeValue(),
-        monthlyProduction: serviceObj.acAnnual / 12
+        monthlyProduction: serviceObj._getMonthlyProduction()
       };
     },
     _parseResponse: function(resp) {
@@ -217,13 +227,41 @@ angular.module("app.services", []).service("LocalStorage", function() {
       return serviceObj.monthlyBill;
     },
     _getIdealSystemSize: function() {
-      return (12 * serviceObj._getMonthlyBill() / serviceObj.kwhCost / serviceObj.acAnnual).toFixed(1);
+      return 12 * serviceObj._getMonthlyBill() / serviceObj.kwhCost / serviceObj.acAnnual;
     },
     _getAnnualValue: function() {
-      return (serviceObj.kwhCost * serviceObj.acAnnual * serviceObj._getIdealSystemSize()).toFixed(2);
+      return serviceObj.kwhCost * serviceObj.acAnnual * serviceObj._getIdealSystemSize();
     },
     _getLifeTimeValue: function() {
       return serviceObj._getAnnualValue() * serviceObj.systemLifeYears;
+    },
+    _getMonthlyProduction: function() {
+      return serviceObj.acAnnual / 12 * serviceObj._getIdealSystemSize();
+    }
+  };
+}).service("Geolocation", function($http) {
+  var service;
+  return service = {
+    get: function(options) {
+      var params;
+      params = {
+        address: options.zip || 93401
+      };
+      return $http.get(window.gmap_address, {
+        params: params
+      }).then(service._parseResponse);
+    },
+    _parseResponse: function(resp) {
+      var _ref, _ref1;
+      console.log(resp);
+      service.city = (_ref = resp.data) != null ? _ref.results[0].address_components[1].short_name : void 0;
+      return service.state = (_ref1 = resp.data) != null ? _ref1.results[0].address_components[2].long_name : void 0;
+    },
+    getCity: function() {
+      return service.city;
+    },
+    getState: function() {
+      return service.state;
     }
   };
 });

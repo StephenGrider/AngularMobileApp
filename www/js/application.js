@@ -49,6 +49,25 @@ angular.module("app", ["ionic", "app.controllers", "app.services", "app.directiv
   return $urlRouterProvider.otherwise("/app/guides");
 });
 
+
+
+angular.module("app.directives", []).directive('slideCalculator', function(Financials) {
+  return {
+    templateUrl: 'templates/directives/slide-calculator.html',
+    restrict: 'E',
+    link: function($scope, ele, attrs) {
+      return ele.find('input').bind('input', function(a) {
+        return $scope.data = Financials.getProduction(a.target.value);
+      });
+    }
+  };
+}).directive('zipEntry', function() {
+  return {
+    templateUrl: 'templates/directives/zip-entry.html',
+    restrict: 'E'
+  };
+});
+
 angular.module("app.controllers", []).controller("AppCtrl", function($scope, $ionicModal, Referral) {
   $scope.loginData = {};
   $ionicModal.fromTemplateUrl("templates/login.html", {
@@ -67,19 +86,9 @@ angular.module("app.controllers", []).controller("AppCtrl", function($scope, $io
     $scope.loginData = {};
     return $scope.closeLogin();
   };
-}).controller("GuidesCtrl", function($scope, GuideContent, GuideStorage) {
-  var onGetAll;
-  onGetAll = function(guides) {
-    return $scope.guides = GuideStorage.getGuideStatus(guides);
-  };
-  return GuideContent.getAll().success(onGetAll);
-}).controller("GuideCtrl", function($scope, $stateParams, GuideContent, GuideStorage) {
-  return GuideContent.getAll().success(function(guides) {
-    $scope.guide = guides[$stateParams.guideId];
-    $scope.guide.hasRead = true;
-    return GuideStorage.setGuideStatus($stateParams.guideId, $scope.guide.hasRead);
-  });
-}).controller("CalculatorCtrl", function($scope, Financials, Geolocation, $q) {
+});
+
+angular.module("app.controllers").controller("CalculatorCtrl", function($scope, Financials, Geolocation, $q) {
   var onRequestsFail, onRequestsFinally, onRequestsSuccess;
   $scope.monthlyPayment = 250;
   $scope.showZip = true;
@@ -113,74 +122,23 @@ angular.module("app.controllers", []).controller("AppCtrl", function($scope, $io
   };
 });
 
-angular.module("app.directives", []).directive('slideCalculator', function(Financials) {
-  return {
-    templateUrl: 'templates/directives/slide-calculator.html',
-    restrict: 'E',
-    link: function($scope, ele, attrs) {
-      return ele.find('input').bind('input', function(a) {
-        return $scope.data = Financials.getProduction(a.target.value);
-      });
-    }
-  };
-}).directive('zipEntry', function() {
-  return {
-    templateUrl: 'templates/directives/zip-entry.html',
-    restrict: 'E'
-  };
+angular.module("app.controllers").controller("GuideCtrl", function($scope, $stateParams, GuideContent, GuideStorage) {
+  return GuideContent.getAll().success(function(guides) {
+    $scope.guide = guides[$stateParams.guideId];
+    $scope.guide.hasRead = true;
+    return GuideStorage.setGuideStatus($stateParams.guideId, $scope.guide.hasRead);
+  });
 });
 
-angular.module("app.services", []).service("LocalStorage", function() {
-  var prefix;
-  prefix = "_solar";
-  return {
-    get: function(key) {
-      return JSON.parse(localStorage.getItem("" + prefix + ":" + key));
-    },
-    set: function(key, item) {
-      return localStorage.setItem("" + prefix + ":" + key, JSON.stringify(item));
-    },
-    setPrefix: function(string) {
-      return prefix = string;
-    }
+angular.module("app.controllers").controller("GuidesCtrl", function($scope, GuideContent, GuideStorage) {
+  var onGetAll;
+  onGetAll = function(guides) {
+    return $scope.guides = GuideStorage.getGuideStatus(guides);
   };
-}).service("GuideContent", function($http) {
-  return {
-    getAll: function() {
-      return $http.get('content/guide.json');
-    }
-  };
-}).service("GuideStorage", function(LocalStorage) {
-  return {
-    getGuideStatus: function(guides) {
-      var storage;
-      storage = LocalStorage.get("guide");
-      if (storage === null) {
-        LocalStorage.set("guide", {});
-        storage = {};
-      }
-      return _(guides).each(function(guide) {
-        return guide.hasRead = storage[guide.id] || false;
-      });
-    },
-    setGuideStatus: function(id, hasRead) {
-      var storage;
-      storage = LocalStorage.get("guide");
-      storage[id] = hasRead;
-      return LocalStorage.set("guide", storage);
-    }
-  };
-}).service("Referral", function() {
-  var ContactDetails;
-  ContactDetails = Parse.Object.extend("Referral");
-  return {
-    save: function(details) {
-      var contactDetails;
-      contactDetails = new ContactDetails(details);
-      return contactDetails.save();
-    }
-  };
-}).service("Financials", function($http) {
+  return GuideContent.getAll().success(onGetAll);
+});
+
+angular.module("app.services", []).service("Financials", function($http) {
   var performanceData, serviceObj, url;
   performanceData = null;
   url = window.nrel_address;
@@ -239,7 +197,9 @@ angular.module("app.services", []).service("LocalStorage", function() {
       return serviceObj.acAnnual / 12 * serviceObj._getIdealSystemSize();
     }
   };
-}).service("Geolocation", function($http) {
+});
+
+angular.module("app.services").service("Geolocation", function($http) {
   var service;
   return service = {
     get: function(options) {
@@ -253,7 +213,6 @@ angular.module("app.services", []).service("LocalStorage", function() {
     },
     _parseResponse: function(resp) {
       var _ref, _ref1;
-      console.log(resp);
       service.city = (_ref = resp.data) != null ? _ref.results[0].address_components[1].short_name : void 0;
       return service.state = (_ref1 = resp.data) != null ? _ref1.results[0].address_components[2].long_name : void 0;
     },
@@ -262,6 +221,64 @@ angular.module("app.services", []).service("LocalStorage", function() {
     },
     getState: function() {
       return service.state;
+    }
+  };
+});
+
+angular.module("app.services").service("GuideContent", function($http) {
+  return {
+    getAll: function() {
+      return $http.get('content/guide.json');
+    }
+  };
+});
+
+angular.module("app.services").service("GuideStorage", function(LocalStorage) {
+  return {
+    getGuideStatus: function(guides) {
+      var storage;
+      storage = LocalStorage.get("guide");
+      if (storage === null) {
+        LocalStorage.set("guide", {});
+        storage = {};
+      }
+      return _(guides).each(function(guide) {
+        return guide.hasRead = storage[guide.id] || false;
+      });
+    },
+    setGuideStatus: function(id, hasRead) {
+      var storage;
+      storage = LocalStorage.get("guide");
+      storage[id] = hasRead;
+      return LocalStorage.set("guide", storage);
+    }
+  };
+});
+
+angular.module("app.services").service("LocalStorage", function() {
+  var prefix;
+  prefix = "_solar";
+  return {
+    get: function(key) {
+      return JSON.parse(localStorage.getItem("" + prefix + ":" + key));
+    },
+    set: function(key, item) {
+      return localStorage.setItem("" + prefix + ":" + key, JSON.stringify(item));
+    },
+    setPrefix: function(string) {
+      return prefix = string;
+    }
+  };
+});
+
+angular.module("app.services").service("Referral", function() {
+  var ContactDetails;
+  ContactDetails = Parse.Object.extend("Referral");
+  return {
+    save: function(details) {
+      var contactDetails;
+      contactDetails = new ContactDetails(details);
+      return contactDetails.save();
     }
   };
 });

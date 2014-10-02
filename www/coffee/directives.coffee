@@ -5,7 +5,6 @@ angular.module("app.directives", [])
   restrict: 'E'
   link: ($scope, ele, attrs) ->
     ele.find('input').bind('input', (a) ->
-
       $scope.data = Financials.getProduction(a.target.value)
     )
 )

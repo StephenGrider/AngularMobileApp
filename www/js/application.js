@@ -49,8 +49,6 @@ angular.module("app", ["ionic", "app.controllers", "app.services", "app.directiv
   return $urlRouterProvider.otherwise("/app/guides");
 });
 
-
-
 angular.module("app.directives", []).directive('slideCalculator', function(Financials) {
   return {
     templateUrl: 'templates/directives/slide-calculator.html',

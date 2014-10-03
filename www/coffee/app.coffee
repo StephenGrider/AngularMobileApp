@@ -1,3 +1,6 @@
+angular.module("app.services", [])
+angular.module("app.controllers", [])
+
 angular.module("app", [
   "ionic"
   "app.controllers"

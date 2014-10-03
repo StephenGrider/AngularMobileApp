@@ -1,4 +1,4 @@
-angular.module("app.controllers", [])
+angular.module("app.controllers")
 
 .controller("AppCtrl", ($scope, $ionicModal, Referral) ->
   $scope.loginData = {}

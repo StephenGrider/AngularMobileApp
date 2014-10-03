@@ -1,6 +1,6 @@
 angular.module("app.services")
 
-.service("Geolocation", ($http) ->
+.factory("Geolocation", ($http) ->
   service =
     get: (options) ->
       params = address: options.zip || 93401

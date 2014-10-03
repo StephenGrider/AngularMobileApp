@@ -1,6 +1,6 @@
 angular.module("app.services")
 
-.service("Referral", ->
+.factory("Referral", ->
   ContactDetails = Parse.Object.extend("Referral");
 
   save: (details) ->

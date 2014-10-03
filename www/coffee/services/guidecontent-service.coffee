@@ -1,5 +1,5 @@
 angular.module("app.services")
 
-.service("GuideContent", ($http) ->
+.factory("GuideContent", ($http) ->
   getAll: -> $http.get('content/guide.json')
 )

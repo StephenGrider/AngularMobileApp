@@ -1,6 +1,6 @@
 angular.module("app.services")
 
-.service("GuideStorage", (LocalStorage) ->
+.factory("GuideStorage", (LocalStorage) ->
   getGuideStatus: (guides) ->
     storage = LocalStorage.get("guide")
 

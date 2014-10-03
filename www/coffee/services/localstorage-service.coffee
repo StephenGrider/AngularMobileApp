@@ -1,6 +1,6 @@
 angular.module("app.services")
 
-.service("LocalStorage", ->
+.factory("LocalStorage", ->
   prefix = "_solar"
 
   get: (key) ->

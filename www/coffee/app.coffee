@@ -9,7 +9,7 @@ angular.module("app", [
     cordova.plugins.Keyboard.hideKeyboardAccessoryBar true  if window.cordova and window.cordova.plugins.Keyboard
     StatusBar.styleDefault()  if window.StatusBar
     Parse.initialize("OueLHhADp4r43zJVjor1UlaKP8A672NTpnoD6JKQ", "HtxCby57dqU6pHSR2nCkjJZ3JflVg84m0ERXONQB")
- 
+
 ).config ($stateProvider, $urlRouterProvider) ->
   $stateProvider.state("app",
     url: "/app"
@@ -17,10 +17,10 @@ angular.module("app", [
     templateUrl: "templates/menu.html"
     controller: "AppCtrl"
   ).state("app.search",
-    url: "/search"
+    url: "/home"
     views:
       menuContent:
-        templateUrl: "templates/search.html"
+        templateUrl: "templates/home.html"
   ).state("app.browse",
     url: "/browse"
     views:

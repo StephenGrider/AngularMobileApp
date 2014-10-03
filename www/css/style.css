@@ -3,6 +3,10 @@
   -moz-box-shadow: -16px -1px 15px 0px rgba(50, 50, 50, 0.69);
   box-shadow: -16px -1px 15px 0px rgba(50, 50, 50, 0.69); }
 
+.footer-button {
+  position: static;
+  margin-top: 10px; }
+
 .list-icon {
   position: absolute;
   top: 16px;

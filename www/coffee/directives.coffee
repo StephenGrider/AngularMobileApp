@@ -4,8 +4,8 @@ angular.module("app.directives", [])
   templateUrl: 'templates/directives/slide-calculator.html'
   restrict: 'E'
   link: ($scope, ele, attrs) ->
-    ele.find('input').bind('input', (a) ->
-      $scope.data = Financials.getProduction(a.target.value)
+    ele.find('input').bind('input', (e) ->
+      $scope.data = Financials.getProduction(e.target.value)
     )
 )
 

@@ -38,3 +38,9 @@
   margin-left: 35%;
   width: 30%;
   margin-top: 20%; }
+
+.col {
+  margin: 5px;
+  border: 1px solid black;
+  border-radius: 4px;
+  text-align: center; }

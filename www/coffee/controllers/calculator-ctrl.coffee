@@ -27,6 +27,6 @@ angular.module("app.controllers")
       .then(onRequestsSuccess, onRequestsFail)
       .finally(onRequestsFinally)
 
-  $scope.showZip = ->
+  $scope.reset = ->
     $scope.showZip = true
 )

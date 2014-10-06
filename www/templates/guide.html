@@ -2,7 +2,11 @@
   <ion-content class="has-header">
     <div class="list card">
       <div class="item item-body">
-        <img class="full-image" src="delorean.jpg">
+        <div class="guide-header">
+          {{guide.title}}
+        </div>
+
+        <img class="guide-image" ng-src="{{guide.image}}">
         <p>
           {{guide.text}}
         </p>

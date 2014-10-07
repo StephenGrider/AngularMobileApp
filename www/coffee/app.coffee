@@ -48,6 +48,12 @@ angular.module("app", [
       menuContent:
         templateUrl: "templates/studies.html"
         controller: "StudiesCtrl"
+  ).state("app.study",
+    url: "/studies/:studyId"
+    views:
+      menuContent:
+        templateUrl: "templates/study.html"
+        controller: "StudyCtrl"
   )
 
-  $urlRouterProvider.otherwise "/app/guides"
+  $urlRouterProvider.otherwise "/app/home"

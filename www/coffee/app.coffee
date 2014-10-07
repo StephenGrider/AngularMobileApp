@@ -36,11 +36,18 @@ angular.module("app", [
       menuContent:
         templateUrl: "templates/guides.html"
         controller: "GuidesCtrl"
-  ).state "app.single",
+  ).state("app.single",
     url: "/guides/:guideId"
     views:
       menuContent:
         templateUrl: "templates/guide.html"
         controller: "GuideCtrl"
+  ).state("app.studies",
+    url: "/studies"
+    views:
+      menuContent:
+        templateUrl: "templates/studies.html"
+        controller: "StudiesCtrl"
+  )
 
   $urlRouterProvider.otherwise "/app/guides"

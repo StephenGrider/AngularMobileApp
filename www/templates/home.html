@@ -2,19 +2,34 @@
   <ion-nav-buttons side="left">
     <button menu-toggle="left" class="button button-icon icon ion-navicon"></button>
   </ion-nav-buttons>
-  <ion-content class="has-header">
+  <ion-content class="has-header home">
 
     <div class="row">
-      <a nav-clear href="#/app/guides" class="col">Guides</a>
+
+      <div class="col">
+        <div><i class="icon ion-android-storage"></i></div>
+        <a nav-clear href="#/app/guides">Guides</a>
+      </div>
+
+      <div class="col">
+        <div><i class="icon ion-calculator"></i></div>
+        <a nav-clear href="#/app/browse">Calculator</a>
+      </div>
+
     </div>
 
-
     <div class="row">
-      <a nav-clear href="#/app/browse" class="col">Calculator</a>
-    </div>
 
-    <div class="row">
-      <div ng-click="login()" class="col">Get More Info</div>
+      <div class="col">
+        <div><i class="icon ion-ios7-flag-outline"></i></div>
+        <a ng-click="login()">Get More Info</a>
+      </div>
+
+
+      <div class="col">
+        <div><i class="icon ion-social-usd"></i></div>
+        <a nav-clear href="#/app/browse">Other Function</a>
+      </div>
     </div>
 
   </ion-content>

@@ -1,9 +1,9 @@
 angular.module("app.controllers")
 
-.controller("StudiesCtrl", ($scope, GuideContent, GuideStorage) ->
-  onGetAll = (guides) ->
-    $scope.guides = GuideStorage.getGuideStatus(guides)
+.controller("StudiesCtrl", ($scope, StudyContent) ->
+  onGetAll = (studies) ->
+    $scope.studies = studies
 
-  GuideContent.getAll()
+  StudyContent.getAll()
     .success(onGetAll)
 )

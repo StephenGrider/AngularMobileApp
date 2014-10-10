@@ -3,7 +3,7 @@
     <button menu-toggle="left" class="button button-icon icon ion-navicon"></button>
   </ion-nav-buttons>
   <ion-content class="has-header">
-    <ion-list>
+    <ion-list class="case-studies-wrapper">
 
       <div ng-repeat="study in studies" class="list card">
 
@@ -17,12 +17,13 @@
           <img src="cover.jpg">
         </div>
 
-        <a class="item assertive" href="#/app/studies/{{study.id}}">
-          Start listening
+        <a class="item assertive link" href="#/app/studies/{{study.id}}">
+          <div class="link-wrapper">
+            Read More
+            <i class="icon ion-arrow-right-c"></i>
+          </div>
         </a>
-
       </div>
-
 
     </ion-list>
   </ion-content>

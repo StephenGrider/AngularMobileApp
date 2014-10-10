@@ -1,7 +1,5 @@
 .menu-content {
   -webkit-box-shadow: -16px -1px 15px 0px rgba(50, 50, 50, 0.69);
-  -moz-box-shadow:    -16px -1px 15px 0px rgba(50, 50, 50, 0.69);
-  box-shadow:         -16px -1px 15px 0px rgba(50, 50, 50, 0.69);
 }
 
 .footer-button {
@@ -78,5 +76,11 @@
 .home {
   .icon {
     font-size: 50px;
+  }
+}
+
+.case-studies-wrapper {
+  .link-wrapper {
+    float: right;
   }
 }
